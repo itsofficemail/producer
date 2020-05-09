@@ -1,0 +1,148 @@
+swagger: "2.0"
+info:
+  description: "Customers APIs"
+  version: "1.0.0"
+  title: "T-Mobile APIs"
+  termsOfService: "https://www.t-mobile.com/"
+  contact:
+    email: "some@email.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8080"
+basePath: "/user"
+tags:
+- name: "customer"
+ 
+paths:
+  /:
+    post:
+      tags:
+      - "customer"
+      summary: "Adds user"
+      description: "Adds user"
+      operationId: "addUser"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Adds user"
+        required: true
+        schema:
+          $ref: "#/definitions/CustomerRequest"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        401:
+          description: "Unauthoraised"
+        405:
+          description: "Invalid input"
+    
+definitions:
+  AddressRequest:
+    type: "object"
+    required:
+    - "addressLine1"
+    - "postalCode"
+    properties:
+      addressLine1:
+        type: "string"
+        minLength: 5
+        maxLength: 50
+        example: "Hyderabad"
+      addressLine2:
+        type: "string"
+        maxLength: 50
+        example: "Hyderabad"
+      street:
+        type: "string"
+        maxLength: 50
+        example: "Kalimandir"
+      postalCode:
+        type: "string"
+        example: 50009
+        minLength: 5
+        maxLength: 5
+  CustomerStatus:
+    type: "string"
+    enum: 
+      - "OPEN"
+      - "CLOSE"
+      - "SUSPENDED"
+      - "RESTORED"
+  
+  CustomerRequest:
+    type: "object"
+    required:
+    - "customerNumber"
+    - "firstName"
+    - "lastName"
+    - "birthDate"
+    - "country"
+    - "countryCode"
+    - "mobileNumber"
+    - "email"
+    - "customerStatus"
+    - "address"
+    properties:
+     customerNumber:
+        type: "string"
+        minLength: 10
+        maxLength: 10
+        example: "C000000001"
+     firstName:
+        type: "string"
+        minLength: 10
+        maxLength: 50
+        example: "Mahesh Reddy"
+     lastName:
+        type: "string"
+        minLength: 10
+        maxLength: 50
+        example: "SuramSuram"
+     birthDate:
+        type: "string"
+        example: "01-01-2000"
+     country:
+        type: "string"
+        example: "india"
+     countryCode:
+        type: "string"
+        minLength: 2
+        maxLength: 2
+        example: "IN"
+     mobileNumber:
+        type: "string"
+        minLength: 10
+        maxLength: 10
+        example: "9848012345"
+     email:
+        type: "string"
+        minLength: 3
+        maxLength: 50
+        example: "some@email.com"
+     customerStatus:
+        $ref: "#/definitions/CustomerStatus"
+     address:
+        $ref: "#/definitions/AddressRequest"
+        
+  RestAPIResponse:
+      type: "object"
+      properties:
+        status:
+          type: "string"
+          example: "success / error"
+        message:
+          type: "string"
+          example: "success msg / error msg"
+        error_type:
+          type: "string"
+          example: "invalid first name"
+      
